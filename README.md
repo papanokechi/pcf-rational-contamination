@@ -27,8 +27,8 @@ results/
   governance.jsonl          — Retraction and verification records
   iter11_bugfix_reeval.json — Corrected classification of all 43 families
 
-paper_optionB_rational_pcf.tex — LaTeX source
-paper_optionB_rational_pcf.pdf — Compiled manuscript
+pcf_rational_contamination_2026.tex — LaTeX source
+pcf_rational_contamination_2026.pdf — Compiled manuscript
 ```
 
 ## Reproducing the Main Results
