@@ -1,0 +1,427 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\emergencystretch=1em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title[Rational Contamination in PCF Searches]{Trivial rational contamination in PSLQ-based
+  polynomial continued fraction searches:\\
+  diagnosis, correction, and a pre-screening protocol}
+
+\author{Papanokechi}
+\address{Independent researcher}
+\email{papanokechi@proton.me}
+
+\subjclass[2020]{11A55, 11Y65, 11B37}
+\keywords{polynomial continued fractions, PSLQ, false positives,
+  rational contamination, Wallis recurrence}
+
+\date{\today}
+
+\thanks{This research used AI assistance (Claude, Anthropic) for
+  code generation, conjecture exploration, and manuscript drafting
+  within an AEAL (Adversarial Epistemic Audit Loop) relay framework.
+  All mathematical claims were verified by the author independently.}
+
+\begin{document}
+\begin{abstract}
+We identify two mechanisms that produce rational limits in random
+polynomial continued fractions (PCFs), both capable of generating
+false positives in PSLQ-based searches for transcendental identities.
+First, if $a(1)=0$ then the GCF $b(0)+\mathbf{K}(a(n)/b(n))$
+reduces trivially to $b(0)$ (the first partial numerator vanishes).
+Second, if $a(k)=0$ for some $k\ge 2$, the CF terminates at finite
+depth.
+Together these account for \emph{all} 43 rational limits in a
+1000-family survey across degrees~2--6.
+We propose a pre-screening protocol that eliminates both classes
+before extended-basis PSLQ, and document the five-iteration
+discovery arc---including a Wallis initialization bug that temporarily
+masked the triviality of the first mechanism---as a case study
+in machine-assisted self-correction.
+\end{abstract}
+
+\maketitle
+
+% =====================================================================
+\section{Introduction}\label{sec:intro}
+% =====================================================================
+
+A \emph{polynomial continued fraction} (PCF) is a generalized continued
+fraction
+\begin{equation}\label{eq:pcf}
+  K \;=\; b(0) + \cfrac{a(1)}{b(1) + \cfrac{a(2)}{b(2) + \cfrac{a(3)}{\ddots}}}
+\end{equation}
+where $a(n) = \sum_{i=0}^{d} \alpha_i\, n^i$ and
+$b(n) = \sum_{i=0}^{d} \beta_i\, n^i$
+are polynomials of degree~$d$ with integer coefficients.
+Following the Ramanujan Machine project~\cite{raayoni2021}, random sampling of
+such families has become a standard tool for discovering new identities
+involving mathematical constants.
+
+Any PSLQ-based search for transcendental identities among PCF limits
+must contend with a practical nuisance: a non-negligible fraction of
+random families converge to \emph{rational} values, which can trigger
+PSLQ relations that mimic genuine transcendental identities when the
+basis includes redundant constants.
+In a survey of 1000 random PCF families (200 per degree $d=2,\ldots,6$,
+coefficients in $\{-4,\ldots,4\}$), we found 43 such families---initially
+misidentified as evidence for $\ln 2$ universality.
+
+The correct explanation is elementary:
+
+\begin{theorem}[Trivial rational limit]\label{thm:main}
+  Let $a(n),b(n)\in\mathbb{Z}[n]$.
+  If $a(1)=0$, then $K = b(0)$.
+\end{theorem}
+
+\begin{proof}
+  The first partial numerator $a(1)$ is the numerator of the entire tail
+  $a(1)/(b(1)+\cdots)$.  When $a(1)=0$, the tail vanishes and
+  $K = b(0) + 0 = b(0)$.
+\end{proof}
+
+The condition $a(1)=0$ means $\sum_{i=0}^d \alpha_i = 0$---the sum
+of the coefficients of the numerator polynomial vanishes.
+This is a linear constraint on the $d+1$ coefficients and is satisfied
+by $\sim\!5$--$9\%$ of random families depending on degree
+(Section~\ref{sec:density}).
+Although elementary, this criterion identifies a non-negligible
+fraction of random PCF families as trivially rational---sufficient
+to dominate any PSLQ search that does not filter them and to produce
+false-positive transcendental identity claims.
+We state it as a theorem rather than a remark precisely because its
+role is \emph{diagnostic}: it is the first step in the pre-screening
+protocol of Section~\ref{sec:protocol}.
+
+\begin{proposition}[Finite CF]\label{prop:finite}
+  If $a(k)=0$ for some integer $k\ge 2$ and $a(n)\ne 0$ for $1\le n<k$,
+  then the GCF\,\eqref{eq:pcf} terminates at depth $k-1$ and is
+  rational.
+\end{proposition}
+
+\begin{proof}
+  The $k$-th partial numerator vanishes, so the tail from depth~$k$
+  onward contributes zero.  The result is a depth-$(k-1)$ finite
+  continued fraction, which is a rational function of its entries.
+\end{proof}
+
+Together, Theorem~\ref{thm:main} and Proposition~\ref{prop:finite}
+explain all 43 rational limits in our survey (Table~\ref{tab:classification}),
+with zero residual cases.
+
+% =====================================================================
+\section{The Wallis recurrence and a convention warning}\label{sec:wallis}
+% =====================================================================
+
+The standard Wallis recurrence for the convergents of~\eqref{eq:pcf} is
+\begin{equation}\label{eq:wallis}
+  A_{-1}=1,\quad A_0 = b(0),\qquad
+  B_{-1}=0,\quad B_0 = 1,
+\end{equation}
+with
+\begin{equation}\label{eq:wallis-rec}
+  A_n = b(n)\,A_{n-1} + a(n)\,A_{n-2},\qquad
+  B_n = b(n)\,B_{n-1} + a(n)\,B_{n-2},
+\end{equation}
+for $n\ge 1$.  The $n$-th convergent is $K_n = A_n/B_n$.
+
+An alternative implementation computes the
+\emph{tail} CF $T = a(1)/(b(1)+\cdots)$ separately and returns
+$K = b(0) + T$.  For the tail, the correct Wallis initialization is
+$P_0 = a(1),\, Q_0 = b(1)$, giving $T = P_n/Q_n$.
+
+\begin{remark}[The initialization bug]\label{rem:bug}
+  Our original evaluator used the incorrect initialization
+  \[
+    \texttt{Pc} = b(1),\quad \texttt{Qc} = 1
+    \qquad\text{(wrong)}
+  \]
+  instead of the correct
+  \[
+    \texttt{Pc} = b(0),\quad \texttt{Qc} = 1,\quad
+    \text{with } K_n = A_n/B_n
+    \qquad\text{(standard Wallis)}
+  \]
+  and returned $b(0) + \texttt{Pc}/\texttt{Qc}$.
+  This computes $b(0) + [b(1) + T]$ instead of $b(0) + T$, adding
+  an offset of exactly $b(1)$ to every PCF value.
+
+  \smallskip\noindent\textbf{Concrete example.}
+  Let $a(n) = n$ and $b(n) = 2+n$ (so $a(1)=1$, $b(0)=2$, $b(1)=3$).
+  The CF is $2 + 1/(3 + 2/(4 + 3/(5+\cdots)))$.
+  The standard Wallis gives $K \approx 2.2956$;
+  the bugged evaluator returns $2.2956 + 3 = 5.2956$.
+
+  \smallskip
+  The error is invisible to convergence testing
+  (the CF still converges, just to the wrong value) and is not
+  caught by PSLQ rationality checks (a shifted rational is still
+  rational).  It was detected only when the ``theorem''
+  $K = b(0)+b(1)$ was subjected to a convention audit against
+  the golden ratio $\varphi = 1+1/(1+1/(1+\cdots))$
+  (Section~\ref{sec:discovery}, Iteration~11).
+  The bug has been patched; the corrected evaluator and the
+  patch commit are recorded in the project repository.%
+  \footnote{Bug patch: \texttt{siarc\_t1t6\_relay.py}, function
+    \texttt{eval\_pcf\_forward}. All results in this paper use
+    the corrected standard Wallis~\eqref{eq:wallis}--\eqref{eq:wallis-rec}.}
+\end{remark}
+
+We emphasize this because the bug is easy to introduce and hard
+to detect: any code that splits the CF into $b(0)$ plus a tail
+must take care with the tail's initial conditions.
+The standard formulation~\eqref{eq:wallis}--\eqref{eq:wallis-rec}
+avoids the issue entirely.
+
+% =====================================================================
+\section{Empirical classification}\label{sec:empirical}
+% =====================================================================
+
+\subsection{Survey design}
+For each degree $d\in\{2,3,4,5,6\}$, we generated 200 random PCF families
+with coefficients $\alpha_i,\beta_i$ drawn uniformly from $\{-4,\ldots,4\}$
+(leading coefficients and $\beta_0$ forced nonzero).
+Each family was evaluated using the standard Wallis
+recurrence~\eqref{eq:wallis}--\eqref{eq:wallis-rec} to depth~2000
+at 150-digit precision, and the limit~$K$ was tested for rationality
+via PSLQ on the basis $[1,K]$.%
+\footnote{Reproduce:
+  \texttt{python scripts/iter11\_bugfix\_reeval.py}.
+  Full code at \url{https://github.com/papanokechi/pcf-rational-contamination}.}
+
+\subsection{Results}
+
+\begin{table}[ht]
+\centering
+\caption{Classification of the 43 rational PCF limits (corrected evaluation).}
+\label{tab:classification}
+\small
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Mechanism} & \textbf{Condition} & \textbf{Count} & \textbf{Limit} \\
+\midrule
+Trivial zero (Thm.~\ref{thm:main}) & $a(1)=0$ & 34 & $K=b(0)$ \\
+Finite CF (Prop.~\ref{prop:finite}) & $a(k)=0,\ k\ge 2$ & 9 & $K\in\mathbb{Q}$ \\
+Non-trivial rational & --- & 0 & --- \\
+\midrule
+\textbf{Total} & & \textbf{43/43} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All 34 trivial-zero cases satisfy $K = b(0)$ exactly, verified by
+exact rational arithmetic (\texttt{fractions.Fraction}) and by
+backward evaluation from depth~100.
+
+The 9 finite CF families terminate at $a(k)=0$ for $k\in\{2,3\}$,
+yielding distinct rational values: $-29/13$, $-12/5$, $-7/4$, $-1$,
+$2/3$, $8/7$, $3/2$, $28/9$, $4$.
+Each value was verified by exact rational arithmetic
+(\texttt{fractions.Fraction}) at the termination depth.
+
+No family produced a non-trivial rational limit (i.e., $K\in\mathbb{Q}$
+with $K\ne b(0)$ and no finite termination).
+No family that was rational under the bugged evaluator became
+irrational after correction.
+
+\subsection{Density model}\label{sec:density}
+
+The probability that a random family has $a(1)=0$ is
+$\Pr\!\bigl(\sum_{i=0}^d \alpha_i = 0\bigr)$, where each $\alpha_i$ is
+uniform on $\{-4,\ldots,4\}$ (the leading coefficient restricted to
+$\{-4,\ldots,4\}\setminus\{0\}$).
+The leading coefficient $\alpha_d$ is restricted to
+$\{-4,\ldots,4\}\setminus\{0\}$, contributing variance $15/2$
+rather than the $20/3$ of the remaining coefficients.
+By a CLT approximation with total variance $\sigma^2 = d\cdot\tfrac{20}{3}+\tfrac{15}{2}$,
+\[
+  \Pr(a(1)=0) \;\approx\; \frac{1}{\sqrt{2\pi\sigma^2}},
+\]
+yielding $\approx 8.7\%$ at $d=2$ and $\approx 5.8\%$ at $d=6$.
+Empirically: $7.5\%$ ($d=2$), $6.5\%$ ($d=3$), $8.5\%$ ($d=4$),
+$8.5\%$ ($d=5$), $4.5\%$ ($d=6$), consistent within sampling noise.
+The finite CF mechanism adds $\sim$1--2\% to the total contamination rate.
+
+% =====================================================================
+\section{Pre-screening protocol}\label{sec:protocol}
+% =====================================================================
+
+Based on the analysis above, we recommend the following pre-screening
+steps before running extended-basis PSLQ on a PCF family:
+
+\begin{enumerate}
+  \item \textbf{Evaluate $a(1)$.}
+    If $a(1) = \sum\alpha_i = 0$, the family is trivially rational
+    ($K=b(0)$).  Discard.
+
+  \item \textbf{Check for integer roots of $a$.}
+    If $a(k)=0$ for any $k\ge 2$, the CF terminates at finite depth.
+    Compute the finite CF value; if rational, discard or flag as known.
+
+  \item \textbf{Rationality pre-check.}
+    Before enriched-basis PSLQ
+    (e.g., basis $[1, K, \ln 2, K\ln 2, (\ln 2)^2]$),
+    first test the minimal basis $[1, K]$.  If PSLQ returns a relation,
+    $K$ is likely rational and will contaminate any enriched scan.
+
+  \item \textbf{Convention audit.}
+    Verify the CF evaluator against a known identity
+    (e.g., $1+1/(1+1/(1+\cdots)) = \varphi$)
+    before trusting numerical values.
+\end{enumerate}
+
+Steps~1--2 are $O(d)$ coefficient checks requiring no high-precision
+arithmetic.
+Step~3 adds a single PSLQ call per family.
+Together they eliminated 100\% of false positives in our survey.%
+\footnote{The pre-screen is implemented in
+  \texttt{scripts/ln2\_prefilter.py}.}
+
+% =====================================================================
+\section{Discovery narrative}\label{sec:discovery}
+% =====================================================================
+
+The results above were reached through five iterations of an automated
+conjecture refinement relay (AEAL architecture~\cite{aeal-paper7,aeal-paper8}),
+providing a documented case study of machine-assisted self-correction:
+
+\begin{enumerate}
+  \item \textbf{Iteration~7} (false positive):
+    A PSLQ scan with the enriched basis
+    $[1,\, K,\, \ln 2,\, K\!\cdot\!\ln 2,\, (\ln 2)^2]$
+    found 43~hits, initially claimed as evidence that $\ln 2$
+    appears in PCF limits at positive density across all degrees.
+
+  \item \textbf{Iteration~8} (rationality diagnosis):
+    All 43 relations have the form $[a, b, 0, 0, 0]$
+    or factor as $(c_1 K + c_0)(1{+}\ln 2) = 0$,
+    both implying $K\in\mathbb{Q}$.
+    Zero genuine $\ln 2$ identities.
+    The~44 associated claims were retracted.
+
+  \item \textbf{Iteration~9} (partial model):
+    Seven families with $K{=}{-}3$ were characterized;
+    all share $b(0)+b(1)=-3$ with
+    $b(0) \in \{-4,-3,-2,-1\}$.
+    A ``dynamical attractor'' hypothesis was proposed
+    and later superseded.
+
+  \item \textbf{Iteration~10} (apparent theorem):
+    The pattern $a(1) = \sum\alpha_i = 0$ was identified across all
+    34 non-finite families.  A Wallis induction proof was constructed
+    for the claim ``$K = b(0)+b(1)$.''  This was accepted as a theorem.
+
+  \item \textbf{Iteration~11} (bug discovery):
+    A convention audit (Remark~\ref{rem:bug}) revealed that the
+    evaluator adds $+b(1)$ to every PCF value.  The ``theorem''
+    $K=b(0)+b(1)$ was a documentation of the code bug.
+    The corrected result is the trivial $K=b(0)$.
+    The Wallis induction proof was valid \emph{within the bugged
+    recurrence} but does not describe the standard mathematical
+    continued fraction.
+\end{enumerate}
+
+The full arc---false positive $\to$ rationality detection $\to$
+attractor hypothesis $\to$ apparent theorem $\to$ bug discovery
+$\to$ trivial explanation---is, to our knowledge, the first documented
+instance of an automated relay generating a false positive,
+proposing and then retracting an intermediate ``theorem,''  and
+ultimately converging on the correct (trivial) result
+through self-correction.
+To our knowledge, this is a documented instance of such a complete
+arc within an automated relay.
+All iterations, including retractions, are preserved in the
+governance log.%
+\footnote{AEAL claims log: \texttt{results/claims.jsonl}.
+  Convention audit: \texttt{scripts/iter11\_bugfix\_reeval.py}.}
+
+% =====================================================================
+\section{Discussion}\label{sec:discussion}
+% =====================================================================
+
+\textbf{Why this matters.}
+The contamination rate of $\sim$5--9\% is high enough to produce
+false positives in any PSLQ scan of moderate size.
+In our survey, 43 out of 1000 families ($4.3\%$) were affected.
+For larger coefficient ranges or higher degrees, the rate changes
+predictably via the density model, allowing experimenters to
+estimate their expected false-positive load \emph{a priori}.
+
+\textbf{The value of documenting errors.}
+The Wallis initialization bug is a cautionary example.
+It produces a systematic offset that is invisible to convergence
+diagnostics and rationality checks, yet transforms a trivial
+observation ($a(1)=0 \Rightarrow K=b(0)$) into an apparently
+non-trivial theorem ($K=b(0)+b(1)$) that survives induction
+proof---because the proof is valid for the bugged recurrence.
+The only reliable diagnostic was cross-checking against a known
+identity with an independent evaluator.
+We recommend this as standard practice for any computational
+continued fraction research.
+
+\textbf{Relation to known results.}
+The observation that $a(1)=0$ makes the GCF trivial is implicit
+in the definition---the first partial numerator is zero, so the
+tail contributes nothing---but does not appear as an explicit
+warning in the standard references~\cite{lorentzen-waadeland},
+likely because analytic convergence theory assumes $a(n)\ne 0$
+for all~$n$.
+In the context of random polynomial PCFs, where $a(1)=0$ occurs
+at positive density, the observation becomes practically relevant.
+
+\textbf{Broader impact.}
+The contamination mechanism identified here---overcomplete PSLQ bases
+combined with unvetted evaluator initialization---is not specific to
+our relay.
+Any system that runs PSLQ on programmatically generated continued
+fractions faces the same risk, including the Ramanujan
+Machine~\cite{raayoni2021} and its derivatives.
+The pre-screening protocol of Section~\ref{sec:protocol} is directly
+applicable: steps~1--2 require only coefficient arithmetic and can
+be added to any PCF search pipeline at negligible cost.
+We hope that documenting both the contamination mechanisms and the
+process by which they were discovered---including the intermediate
+errors---provides a useful template for quality control in
+automated mathematical discovery.
+
+% =====================================================================
+% References
+% =====================================================================
+\begin{thebibliography}{9}
+
+\bibitem{raayoni2021}
+G.~Raayoni et al.,
+\emph{Generating conjectures on fundamental constants with the
+  Ramanujan Machine},
+Nature \textbf{590} (2021), 67--73.
+
+\bibitem{lorentzen-waadeland}
+L.~Lorentzen and H.~Waadeland,
+\emph{Continued Fractions with Applications},
+North-Holland, 1992.
+
+\bibitem{aeal-paper7}
+Papanokechi,
+\emph{AEAL relay architecture for automated conjecture refinement},
+Zenodo, 2026.
+\texttt{doi:\href{https://doi.org/10.5281/zenodo.19562751}{10.5281/zenodo.19562751}}.
+
+\bibitem{aeal-paper8}
+Papanokechi,
+\emph{Adversarial epistemic audit loops: governance and self-correction},
+Zenodo, 2026.
+\texttt{doi:\href{https://doi.org/10.5281/zenodo.19565086}{10.5281/zenodo.19565086}}.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+*.egg
+dist/
+build/
+
+# LaTeX
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.fls
+*.fdb_latexmk
+*.blg
+*.bbl
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project
+results/tmp/
+*.tmp
