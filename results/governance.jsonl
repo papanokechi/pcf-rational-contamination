@@ -1,0 +1,6 @@
+{"iteration": 5, "n_claims_proposed": 5, "n_verified": 5, "n_mismatch": 0, "n_precision_sensitive": 0, "agent_health_score": 1.0, "mode": "normal"}
+{"iteration": 6, "n_claims_proposed": 5, "n_verified": 5, "n_mismatch": 0, "n_precision_sensitive": 0, "agent_health_score": 1.0, "mode": "normal"}
+{"iteration": 7, "territory": "T1-LN2", "n_claims_proposed": 44, "n_verified": 44, "n_mismatch": 0, "n_schema_invalid": 0, "agent_health_score": 1.0, "mode": "normal"}
+{"event": "claim_retraction", "iteration_retracted": 7, "reason": "basis_contamination_rational_K", "count": 44, "retraction_iteration": 9, "timestamp": "2026-04-18T22:39:47.626140+00:00"}
+{"iteration": 9, "territory": "T1-RAT", "event": "governance_check", "n_claims_proposed": 8, "n_verified": 8, "n_mismatch": 0, "n_schema_invalid": 0, "agent_health_score": 1.0, "mode": "CLEAN", "timestamp": "2026-04-18T22:43:26.158093+00:00"}
+{"iteration": 10, "event": "governance_check", "mode": "CLEAN", "claims_emitted": 7, "verified": 7, "mismatch": 0, "ahs": 1.0, "timestamp": "2026-04-19T07:55:57.586142"}

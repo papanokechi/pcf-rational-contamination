@@ -1,0 +1,914 @@
+{
+  "bug_description": "eval_pcf_forward initializes Pc=b(1) instead of Pc=b(0), adding +b(1) offset",
+  "correction": "Use standard Wallis: A_0=b(0), B_0=1",
+  "categories": {
+    "trivial_a1_zero": 34,
+    "finite_cf": 9,
+    "still_rational": 0,
+    "no_longer_rational": 0,
+    "divergent": 0
+  },
+  "details": {
+    "trivial_a1_zero": [
+      {
+        "degree": 2,
+        "family_id": 56,
+        "a_coeffs": [
+          2,
+          2,
+          -4
+        ],
+        "b_coeffs": [
+          -3,
+          -1,
+          -1
+        ],
+        "K_corrected": -3.0,
+        "K_exact": "-3",
+        "b_0": -3
+      },
+      {
+        "degree": 2,
+        "family_id": 67,
+        "a_coeffs": [
+          -4,
+          3,
+          1
+        ],
+        "b_coeffs": [
+          -2,
+          2,
+          -1
+        ],
+        "K_corrected": -2.0,
+        "K_exact": "-2",
+        "b_0": -2
+      },
+      {
+        "degree": 2,
+        "family_id": 118,
+        "a_coeffs": [
+          4,
+          -3,
+          -1
+        ],
+        "b_coeffs": [
+          2,
+          -3,
+          1
+        ],
+        "K_corrected": 2.0,
+        "K_exact": "2",
+        "b_0": 2
+      },
+      {
+        "degree": 2,
+        "family_id": 123,
+        "a_coeffs": [
+          -2,
+          3,
+          -1
+        ],
+        "b_coeffs": [
+          3,
+          -2,
+          1
+        ],
+        "K_corrected": 3.0,
+        "K_exact": "3",
+        "b_0": 3
+      },
+      {
+        "degree": 2,
+        "family_id": 139,
+        "a_coeffs": [
+          0,
+          -4,
+          4
+        ],
+        "b_coeffs": [
+          -4,
+          -3,
+          -4
+        ],
+        "K_corrected": -4.0,
+        "K_exact": "-4",
+        "b_0": -4
+      },
+      {
+        "degree": 2,
+        "family_id": 185,
+        "a_coeffs": [
+          2,
+          -3,
+          1
+        ],
+        "b_coeffs": [
+          4,
+          -2,
+          2
+        ],
+        "K_corrected": 4.0,
+        "K_exact": "4",
+        "b_0": 4
+      },
+      {
+        "degree": 3,
+        "family_id": 70,
+        "a_coeffs": [
+          -4,
+          -4,
+          4,
+          4
+        ],
+        "b_coeffs": [
+          4,
+          4,
+          4,
+          -1
+        ],
+        "K_corrected": 4.0,
+        "K_exact": "4",
+        "b_0": 4
+      },
+      {
+        "degree": 3,
+        "family_id": 94,
+        "a_coeffs": [
+          3,
+          -2,
+          2,
+          -3
+        ],
+        "b_coeffs": [
+          -1,
+          2,
+          3,
+          -1
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "b_0": -1
+      },
+      {
+        "degree": 3,
+        "family_id": 100,
+        "a_coeffs": [
+          2,
+          2,
+          -3,
+          -1
+        ],
+        "b_coeffs": [
+          1,
+          -3,
+          2,
+          1
+        ],
+        "K_corrected": 1.0,
+        "K_exact": "1",
+        "b_0": 1
+      },
+      {
+        "degree": 3,
+        "family_id": 115,
+        "a_coeffs": [
+          -1,
+          4,
+          -4,
+          1
+        ],
+        "b_coeffs": [
+          -3,
+          2,
+          2,
+          -3
+        ],
+        "K_corrected": -3.0,
+        "K_exact": "-3",
+        "b_0": -3
+      },
+      {
+        "degree": 3,
+        "family_id": 130,
+        "a_coeffs": [
+          -3,
+          4,
+          3,
+          -4
+        ],
+        "b_coeffs": [
+          -1,
+          1,
+          2,
+          -3
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "b_0": -1
+      },
+      {
+        "degree": 3,
+        "family_id": 140,
+        "a_coeffs": [
+          -3,
+          1,
+          1,
+          1
+        ],
+        "b_coeffs": [
+          -3,
+          2,
+          3,
+          4
+        ],
+        "K_corrected": -3.0,
+        "K_exact": "-3",
+        "b_0": -3
+      },
+      {
+        "degree": 3,
+        "family_id": 153,
+        "a_coeffs": [
+          -3,
+          3,
+          2,
+          -2
+        ],
+        "b_coeffs": [
+          -3,
+          -2,
+          2,
+          3
+        ],
+        "K_corrected": -3.0,
+        "K_exact": "-3",
+        "b_0": -3
+      },
+      {
+        "degree": 4,
+        "family_id": 34,
+        "a_coeffs": [
+          -2,
+          -3,
+          2,
+          0,
+          3
+        ],
+        "b_coeffs": [
+          -1,
+          0,
+          -1,
+          2,
+          -2
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "b_0": -1
+      },
+      {
+        "degree": 4,
+        "family_id": 54,
+        "a_coeffs": [
+          -2,
+          -1,
+          0,
+          1,
+          2
+        ],
+        "b_coeffs": [
+          3,
+          4,
+          -3,
+          1,
+          1
+        ],
+        "K_corrected": 3.0,
+        "K_exact": "3",
+        "b_0": 3
+      },
+      {
+        "degree": 4,
+        "family_id": 74,
+        "a_coeffs": [
+          -3,
+          0,
+          1,
+          0,
+          2
+        ],
+        "b_coeffs": [
+          3,
+          -4,
+          3,
+          -1,
+          -2
+        ],
+        "K_corrected": 3.0,
+        "K_exact": "3",
+        "b_0": 3
+      },
+      {
+        "degree": 4,
+        "family_id": 82,
+        "a_coeffs": [
+          4,
+          4,
+          -2,
+          -3,
+          -3
+        ],
+        "b_coeffs": [
+          3,
+          -1,
+          -1,
+          3,
+          1
+        ],
+        "K_corrected": 3.0,
+        "K_exact": "3",
+        "b_0": 3
+      },
+      {
+        "degree": 4,
+        "family_id": 101,
+        "a_coeffs": [
+          -1,
+          -2,
+          -1,
+          0,
+          4
+        ],
+        "b_coeffs": [
+          -1,
+          -4,
+          4,
+          -1,
+          1
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "b_0": -1
+      },
+      {
+        "degree": 4,
+        "family_id": 137,
+        "a_coeffs": [
+          -4,
+          3,
+          -1,
+          3,
+          -1
+        ],
+        "b_coeffs": [
+          1,
+          4,
+          -1,
+          -4,
+          1
+        ],
+        "K_corrected": 1.0,
+        "K_exact": "1",
+        "b_0": 1
+      },
+      {
+        "degree": 4,
+        "family_id": 156,
+        "a_coeffs": [
+          -4,
+          -3,
+          2,
+          3,
+          2
+        ],
+        "b_coeffs": [
+          -1,
+          2,
+          0,
+          0,
+          -3
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "b_0": -1
+      },
+      {
+        "degree": 4,
+        "family_id": 167,
+        "a_coeffs": [
+          2,
+          1,
+          4,
+          -4,
+          -3
+        ],
+        "b_coeffs": [
+          -1,
+          2,
+          -3,
+          2,
+          -2
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "b_0": -1
+      },
+      {
+        "degree": 4,
+        "family_id": 174,
+        "a_coeffs": [
+          -1,
+          -2,
+          2,
+          -1,
+          2
+        ],
+        "b_coeffs": [
+          -2,
+          -1,
+          1,
+          4,
+          2
+        ],
+        "K_corrected": -2.0,
+        "K_exact": "-2",
+        "b_0": -2
+      },
+      {
+        "degree": 4,
+        "family_id": 193,
+        "a_coeffs": [
+          -1,
+          1,
+          1,
+          0,
+          -1
+        ],
+        "b_coeffs": [
+          -3,
+          -1,
+          -1,
+          -3,
+          -2
+        ],
+        "K_corrected": -3.0,
+        "K_exact": "-3",
+        "b_0": -3
+      },
+      {
+        "degree": 5,
+        "family_id": 11,
+        "a_coeffs": [
+          -2,
+          2,
+          4,
+          -2,
+          -3,
+          1
+        ],
+        "b_coeffs": [
+          -4,
+          -3,
+          -1,
+          -3,
+          -1,
+          -2
+        ],
+        "K_corrected": -4.0,
+        "K_exact": "-4",
+        "b_0": -4
+      },
+      {
+        "degree": 5,
+        "family_id": 63,
+        "a_coeffs": [
+          -2,
+          -3,
+          4,
+          3,
+          2,
+          -4
+        ],
+        "b_coeffs": [
+          2,
+          -1,
+          4,
+          3,
+          -1,
+          -4
+        ],
+        "K_corrected": 2.0,
+        "K_exact": "2",
+        "b_0": 2
+      },
+      {
+        "degree": 5,
+        "family_id": 117,
+        "a_coeffs": [
+          1,
+          -4,
+          -4,
+          2,
+          1,
+          4
+        ],
+        "b_coeffs": [
+          -3,
+          0,
+          3,
+          -4,
+          3,
+          2
+        ],
+        "K_corrected": -3.0,
+        "K_exact": "-3",
+        "b_0": -3
+      },
+      {
+        "degree": 5,
+        "family_id": 119,
+        "a_coeffs": [
+          -2,
+          0,
+          1,
+          -1,
+          4,
+          -2
+        ],
+        "b_coeffs": [
+          2,
+          -4,
+          3,
+          -4,
+          3,
+          -4
+        ],
+        "K_corrected": 2.0,
+        "K_exact": "2",
+        "b_0": 2
+      },
+      {
+        "degree": 5,
+        "family_id": 121,
+        "a_coeffs": [
+          -3,
+          -2,
+          4,
+          0,
+          -2,
+          3
+        ],
+        "b_coeffs": [
+          -4,
+          -1,
+          0,
+          0,
+          4,
+          2
+        ],
+        "K_corrected": -4.0,
+        "K_exact": "-4",
+        "b_0": -4
+      },
+      {
+        "degree": 6,
+        "family_id": 2,
+        "a_coeffs": [
+          4,
+          1,
+          1,
+          -3,
+          -3,
+          -1,
+          1
+        ],
+        "b_coeffs": [
+          -2,
+          -4,
+          -3,
+          1,
+          2,
+          -1,
+          -4
+        ],
+        "K_corrected": -2.0,
+        "K_exact": "-2",
+        "b_0": -2
+      },
+      {
+        "degree": 6,
+        "family_id": 74,
+        "a_coeffs": [
+          2,
+          -2,
+          4,
+          -3,
+          -1,
+          -4,
+          4
+        ],
+        "b_coeffs": [
+          -1,
+          -4,
+          3,
+          -4,
+          -1,
+          4,
+          1
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "b_0": -1
+      },
+      {
+        "degree": 6,
+        "family_id": 132,
+        "a_coeffs": [
+          -4,
+          0,
+          -4,
+          4,
+          -3,
+          4,
+          3
+        ],
+        "b_coeffs": [
+          1,
+          3,
+          0,
+          -3,
+          -1,
+          -3,
+          4
+        ],
+        "K_corrected": 1.0,
+        "K_exact": "1",
+        "b_0": 1
+      },
+      {
+        "degree": 6,
+        "family_id": 135,
+        "a_coeffs": [
+          -3,
+          -3,
+          4,
+          1,
+          1,
+          2,
+          -2
+        ],
+        "b_coeffs": [
+          3,
+          3,
+          2,
+          -4,
+          1,
+          2,
+          -2
+        ],
+        "K_corrected": 3.0,
+        "K_exact": "3",
+        "b_0": 3
+      },
+      {
+        "degree": 6,
+        "family_id": 160,
+        "a_coeffs": [
+          -3,
+          3,
+          0,
+          1,
+          -2,
+          4,
+          -3
+        ],
+        "b_coeffs": [
+          4,
+          4,
+          -1,
+          1,
+          -2,
+          -3,
+          -2
+        ],
+        "K_corrected": 4.0,
+        "K_exact": "4",
+        "b_0": 4
+      },
+      {
+        "degree": 6,
+        "family_id": 170,
+        "a_coeffs": [
+          -1,
+          0,
+          -2,
+          2,
+          1,
+          3,
+          -3
+        ],
+        "b_coeffs": [
+          1,
+          1,
+          -3,
+          -2,
+          -1,
+          4,
+          4
+        ],
+        "K_corrected": 1.0,
+        "K_exact": "1",
+        "b_0": 1
+      }
+    ],
+    "finite_cf": [
+      {
+        "degree": 2,
+        "family_id": 32,
+        "a_coeffs": [
+          0,
+          -3,
+          1
+        ],
+        "b_coeffs": [
+          -3,
+          1,
+          -1
+        ],
+        "K_corrected": -2.230769230769231,
+        "K_exact": "-29/13",
+        "termination_point": 3,
+        "b_0": -3,
+        "b_1": -3
+      },
+      {
+        "degree": 2,
+        "family_id": 65,
+        "a_coeffs": [
+          -4,
+          -4,
+          3
+        ],
+        "b_coeffs": [
+          -3,
+          -2,
+          1
+        ],
+        "K_corrected": -1.75,
+        "K_exact": "-7/4",
+        "termination_point": 2,
+        "b_0": -3,
+        "b_1": -4
+      },
+      {
+        "degree": 2,
+        "family_id": 112,
+        "a_coeffs": [
+          0,
+          -2,
+          1
+        ],
+        "b_coeffs": [
+          1,
+          1,
+          1
+        ],
+        "K_corrected": 0.6666666666666666,
+        "K_exact": "2/3",
+        "termination_point": 2,
+        "b_0": 1,
+        "b_1": 3
+      },
+      {
+        "degree": 2,
+        "family_id": 173,
+        "a_coeffs": [
+          0,
+          -4,
+          2
+        ],
+        "b_coeffs": [
+          3,
+          -2,
+          -3
+        ],
+        "K_corrected": 4.0,
+        "K_exact": "4",
+        "termination_point": 2,
+        "b_0": 3,
+        "b_1": -2
+      },
+      {
+        "degree": 2,
+        "family_id": 189,
+        "a_coeffs": [
+          0,
+          -3,
+          1
+        ],
+        "b_coeffs": [
+          2,
+          4,
+          -4
+        ],
+        "K_corrected": 1.1428571428571428,
+        "K_exact": "8/7",
+        "termination_point": 3,
+        "b_0": 2,
+        "b_1": 2
+      },
+      {
+        "degree": 3,
+        "family_id": 5,
+        "a_coeffs": [
+          0,
+          4,
+          4,
+          -3
+        ],
+        "b_coeffs": [
+          -1,
+          0,
+          2,
+          1
+        ],
+        "K_corrected": 1.5,
+        "K_exact": "3/2",
+        "termination_point": 2,
+        "b_0": -1,
+        "b_1": 2
+      },
+      {
+        "degree": 3,
+        "family_id": 57,
+        "a_coeffs": [
+          0,
+          -2,
+          -1,
+          1
+        ],
+        "b_coeffs": [
+          -3,
+          3,
+          -4,
+          3
+        ],
+        "K_corrected": -1.0,
+        "K_exact": "-1",
+        "termination_point": 2,
+        "b_0": -3,
+        "b_1": -1
+      },
+      {
+        "degree": 3,
+        "family_id": 119,
+        "a_coeffs": [
+          -3,
+          1,
+          -3,
+          1
+        ],
+        "b_coeffs": [
+          -4,
+          -1,
+          -1,
+          1
+        ],
+        "K_corrected": -2.4,
+        "K_exact": "-12/5",
+        "termination_point": 3,
+        "b_0": -4,
+        "b_1": -5
+      },
+      {
+        "degree": 5,
+        "family_id": 112,
+        "a_coeffs": [
+          2,
+          1,
+          -1,
+          -4,
+          0,
+          1
+        ],
+        "b_coeffs": [
+          3,
+          -2,
+          -3,
+          -2,
+          -4,
+          -1
+        ],
+        "K_corrected": 3.111111111111111,
+        "K_exact": "28/9",
+        "termination_point": 2,
+        "b_0": 3,
+        "b_1": -9
+      }
+    ],
+    "still_rational": [],
+    "no_longer_rational": [],
+    "divergent": []
+  },
+  "elapsed_s": 3.4
+}
